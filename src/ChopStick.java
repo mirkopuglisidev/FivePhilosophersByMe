@@ -2,7 +2,7 @@ public class ChopStick {
     private enum states {LIBERO, OCCUPATO};
     private states state;
 
-     int chopID;
+    private int chopID;
 
     ChopStick(int chopID){
        state = states.LIBERO;
@@ -33,5 +33,7 @@ public class ChopStick {
         return 1;
     }
 
-
+    int getChopID(){
+        return this.chopID;
+    }
 }
