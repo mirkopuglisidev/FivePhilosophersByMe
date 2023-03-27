@@ -1,24 +1,28 @@
-import java.sql.Time;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 public class Philosopher extends Thread {
     int philID;
     int mealCounter;
-    ChopStick left, right;
+    ChopStick firstToTake, secondToTake;
+    /*
+    meglio specificare temporalmente quali chopstick verranno presi,
+    rispetto ad indicare chopstick destro da sinistro in modo da non confondersi con le stampe...
+    in quanto l'ultimo filosofo si troverà il chopstick alla sua SX come secondo da prendere
+    e quello alla sua DX come primo in modo da scongiurare il deadlock.
+     */
 
     Philosopher(int i, ChopStick c1, ChopStick c2, int numberOfPhils){
         mealCounter = 0;
-        left = c1;
-        right = c2;
+        firstToTake = c1;
+        secondToTake = c2;
         philID = i;
 
         if(philID == numberOfPhils){
             // swap left with right chopsticks
             ChopStick tmp;
-            tmp = right;
-            right = left;
-            left = tmp;
+            tmp = secondToTake;
+            secondToTake = firstToTake;
+            firstToTake = tmp;
         }
     }
 
@@ -32,20 +36,19 @@ public class Philosopher extends Thread {
     }
 
 
-
     void eat(){
 
         System.out.println("Hello there, i'm philosopher "+ philID  +" I'm going to eat");
 
-        System.out.println("I'm philosopher "+ philID +" I'll take the right Chopstick (chopstick "+ left.chopID +")");
-        left.takeChopstick(philID);
+        System.out.println("I'm philosopher "+ philID +" I'll take the right Chopstick (chopstick "+ firstToTake.chopID +")");
+        firstToTake.takeChopstick(philID);
         try {
           Thread.sleep(500); // deadlock molto facile così
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("I'm philosopher "+ philID +" I'll take the right Chopstick (chopstick "+ right.chopID +")");
-        right.takeChopstick(philID);
+        System.out.println("I'm philosopher "+ philID +" I'll take the right Chopstick (chopstick "+ secondToTake.chopID +")");
+        secondToTake.takeChopstick(philID);
 
         System.err.println("I'm philosopher "+ philID  +", I am STARTING TO EAT");
         // simulo mangiata
@@ -56,8 +59,8 @@ public class Philosopher extends Thread {
         }
         mealCounter++;
 
-        left.putChopsticks(philID);
-        right.putChopsticks(philID);
+        firstToTake.putChopsticks(philID);
+        secondToTake.putChopsticks(philID);
     }
 
     void sleep(){
@@ -69,20 +72,20 @@ public class Philosopher extends Thread {
         }
     }
 
-    int getLeft()
+    int getFirstToTake()
     {
-        return left.chopID;
+        return firstToTake.chopID;
     }
 
-    int getRight(){
-        return right.chopID;
+    int getSecondToTake(){
+        return secondToTake.chopID;
     }
 
     @Override
     public void run() {
 
-        System.out.println("Philosopher " + this.philID + " left chopstick => "  + getLeft());
-        System.out.println("Philosopher " + this.philID + " right chopstick => "  + getRight());
+        System.out.println("Philosopher " + this.philID + " first chopstick to take => "  + getFirstToTake());
+        System.out.println("Philosopher " + this.philID + " second chopstick to take => "  + getSecondToTake());
 
        while (true)
        {
