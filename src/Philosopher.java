@@ -27,7 +27,7 @@ public class Philosopher extends Thread {
     }
 
     void think() {
-        System.out.println("Hello there, i'm philosopher "+ philID  +" I'm going to think");
+        System.out.println("Hello there, i'm philosopher "+ philID  +" I'm thinking...");
         try {
             Thread.sleep( ThreadLocalRandom.current().nextLong(10, 50));
         } catch (InterruptedException e) {
@@ -40,14 +40,14 @@ public class Philosopher extends Thread {
 
         System.out.println("Hello there, i'm philosopher "+ philID  +" I'm going to eat");
 
-        System.out.println("I'm philosopher "+ philID +" I'll take the right Chopstick (chopstick "+ firstToTake.chopID +")");
+        System.out.println("I'm philosopher "+ philID +" I'll take the first Chopstick (chopstick "+ firstToTake.chopID +")");
         firstToTake.takeChopstick(philID);
         try {
           Thread.sleep(500); // deadlock molto facile così
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("I'm philosopher "+ philID +" I'll take the right Chopstick (chopstick "+ secondToTake.chopID +")");
+        System.out.println("I'm philosopher "+ philID +" I'll take the second Chopstick (chopstick "+ secondToTake.chopID +")");
         secondToTake.takeChopstick(philID);
 
         System.err.println("I'm philosopher "+ philID  +", I am STARTING TO EAT");
@@ -64,7 +64,7 @@ public class Philosopher extends Thread {
     }
 
     void sleep(){
-        System.out.println("I'm philosopher "+ philID +" I'll take a napv after " + mealCounter + "meals");
+        System.out.println("I'm philosopher "+ philID +" I'll go sleep after " + mealCounter + " meals");
         try {
             sleep(1000* (int)Math.random());
         } catch (InterruptedException e) {
@@ -84,8 +84,8 @@ public class Philosopher extends Thread {
     @Override
     public void run() {
 
-        System.out.println("Philosopher " + this.philID + " first chopstick to take => "  + getFirstToTake());
-        System.out.println("Philosopher " + this.philID + " second chopstick to take => "  + getSecondToTake());
+        System.out.println("[Philosopher " + this.philID + "] first chopstick to take => "  + getFirstToTake());
+        System.out.println("[Philosopher " + this.philID + "], second chopstick to take => "  + getSecondToTake());
 
        while (true)
        {

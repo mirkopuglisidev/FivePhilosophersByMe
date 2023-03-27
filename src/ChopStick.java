@@ -1,8 +1,8 @@
 public class ChopStick {
-    enum states {LIBERO, OCCUPATO};
-    states state;
+    private enum states {LIBERO, OCCUPATO};
+    private states state;
 
-    int chopID;
+     int chopID;
 
     ChopStick(int chopID){
        state = states.LIBERO;
